@@ -1,8 +1,7 @@
 import { useDispatch } from 'react-redux'
-import './App.css'
-import WelcomeHeader from './components/WelcomeHeader'
 import { useForm, type SubmitHandler } from 'react-hook-form';
-import { setUser } from './redux/slices.ts/userSlice';
+import { setUser } from '../redux/slices.ts/userSlice';
+import { useNavigate } from 'react-router';
 
 type UserForm = {
   name: string;
@@ -10,20 +9,19 @@ type UserForm = {
   financialGoal: string;
 }
 
-function App() {
+function Login() {
   const { register, handleSubmit } = useForm<UserForm>();
+  const navigate = useNavigate();
   
   const dispatch = useDispatch();
 
   const handleSubmitUserForm: SubmitHandler<UserForm> = (data) => {
-    console.log(data);
     dispatch(setUser(data));
-  }
+    navigate('/home');
+  } 
 
   return (
     <div className='flex flex-col'>
-      <WelcomeHeader />
-
       <div className="shadow-lg p-6 bg-white rounded-md w-full max-w-md mx-auto">
         <form onSubmit={handleSubmit(handleSubmitUserForm)} className="flex flex-col gap-4">
           <div>
@@ -74,4 +72,4 @@ function App() {
   )
 }
 
-export default App
+export default Login
