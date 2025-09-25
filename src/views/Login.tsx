@@ -13,13 +13,12 @@ type UserForm = {
 function Login() {
   const { register, handleSubmit } = useForm<UserForm>({
     defaultValues: {
-      name: '',
-      income: 0,
+      name: 'Joel',
+      income: 5000,
       financialGoal: 'economizar'
     }
   });
   const navigate = useNavigate();
-  
   const dispatch = useDispatch();
 
   const handleSubmitUserForm: SubmitHandler<UserForm> = (data) => {
