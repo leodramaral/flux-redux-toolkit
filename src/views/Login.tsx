@@ -1,22 +1,30 @@
 import { useDispatch } from 'react-redux'
 import { useForm, type SubmitHandler } from 'react-hook-form';
-import { setUser } from '../redux/slices.ts/userSlice';
+import { setDailyBudget, setUser } from '../redux/slices.ts/userSlice';
 import { useNavigate } from 'react-router';
 
 type UserForm = {
   name: string;
   income: number;
   financialGoal: string;
+  dailyBudget: number;
 }
 
 function Login() {
-  const { register, handleSubmit } = useForm<UserForm>();
+  const { register, handleSubmit } = useForm<UserForm>({
+    defaultValues: {
+      name: '',
+      income: 0,
+      financialGoal: 'economizar'
+    }
+  });
   const navigate = useNavigate();
   
   const dispatch = useDispatch();
 
   const handleSubmitUserForm: SubmitHandler<UserForm> = (data) => {
     dispatch(setUser(data));
+    dispatch(setDailyBudget(data.income));
     navigate('/home');
   } 
 
@@ -52,13 +60,36 @@ function Login() {
         <label htmlFor="financialGoal" className="block text-sm font-medium text-gray-700">
           Objetivo financeiro
         </label>
-        <input
-          type="text"
-          id="financialGoal"
-          className="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          placeholder="Digite seu objetivo financeiro"
-          {...register('financialGoal')}
-        />
+        <div className="flex flex-col gap-2">
+          <label className="block text-sm font-medium text-gray-700">Escolha seu objetivo:</label>
+          <label className="flex items-center gap-2">
+            <input
+              type="radio"
+              value="economizar"
+              {...register('financialGoal')}
+              className="accent-blue-600"
+            />
+            Economizar
+          </label>
+          <label className="flex items-center gap-2">
+            <input
+              type="radio"
+              value="investir"
+              {...register('financialGoal')}
+              className="accent-blue-600"
+            />
+            Investir
+          </label>
+          <label className="flex items-center gap-2">
+            <input
+              type="radio"
+              value="controlar gastos"
+              {...register('financialGoal')}
+              className="accent-blue-600"
+            />
+            Controlar gastos
+          </label>
+        </div>
           </div>
           <button
         type="submit"
