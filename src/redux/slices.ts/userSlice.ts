@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-type FinancialGoal = 'economizar' | 'investir' | 'controlar gastos';
+type FinancialGoal = 'economizar' | 'investir' | 'controlar-gastos';
 
 interface IUserState {
     name: string;
