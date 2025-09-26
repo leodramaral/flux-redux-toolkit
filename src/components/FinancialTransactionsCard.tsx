@@ -39,16 +39,15 @@ function TransactionsList({ financialTnxs }: TransactionsListProps) {
         <div>
             {financialTnxs && financialTnxs.length > 0 ? (
                 financialTnxs.map((item, idx) => (
-                    <>
-                    <div
-                        key={idx}
-                        className={`flex justify-between mr-2 ${item.type === 'income' ? 'text-green-500' : 'text-orange-500'}`}
-                    >
-                        <span>{item.name}</span>
-                        <span className="font-bold">{currencyFormatter.format(item.amount)}</span>
+                    <div key={idx}>
+                        <div
+                            className={`flex justify-between mr-2 ${item.type === 'income' ? 'text-green-500' : 'text-orange-500'}`}
+                        >
+                            <span>{item.name}</span>
+                            <span className="font-bold">{currencyFormatter.format(item.amount)}</span>
+                        </div>
+                        <Divider />
                     </div>
-                    <Divider />
-                    </>
                 ))
             ) : (
                 <div className="py-2 text-gray-400">Nenhuma transação encontrada.</div>
