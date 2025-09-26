@@ -1,24 +1,29 @@
+import { Controller, useForm, type SubmitHandler } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { addTnx, type FinancialType } from "../redux/slices.ts/financialTransactionSlice";
-import { useForm, type SubmitHandler } from "react-hook-form";
 import { updateDailyBudget } from "../redux/slices.ts/userSlice";
+import { InputText } from "primereact/inputtext";
+import { InputNumber } from "primereact/inputnumber";
+import { Dropdown } from "primereact/dropdown";
+import { Calendar } from "primereact/calendar";
+import { Button } from "primereact/button";
 
 type FinancialTransactionForm = {
     name: string;
     amount: number;
     type: FinancialType;
     category: string;
-    date: string;
+    date: Date;
 }
 
 export default function FinancialTransactionForm() {
-    const { register, handleSubmit } = useForm<FinancialTransactionForm>({
+    const { register, handleSubmit, setValue, control } = useForm<FinancialTransactionForm>({
         defaultValues: {
             name: '',
             amount: 0,
             type: 'expense',
             category: '',
-            date: new Date().toISOString().slice(0, 10)
+            date: new Date()
         }
     });
 
@@ -29,6 +34,11 @@ export default function FinancialTransactionForm() {
         dispatch(addTnx(data));
         dispatch(updateDailyBudget({ amount: data.amount, type: data.type }));
     }
+
+    const typeOptions = [
+        { label: "Despesa", value: "expense" },
+        { label: "Receita", value: "income" }
+    ];
 
     return (
         <form
@@ -43,99 +53,83 @@ export default function FinancialTransactionForm() {
                 gap: "1.2rem"
             }}
         >
-            <div style={{ display: "flex", flexDirection: "column", gap: "0.3rem" }}>
+            <div className="p-field" style={{ display: "flex", flexDirection: "column", gap: "0.3rem" }}>
                 <label htmlFor="name" style={{ fontWeight: 500 }}>Nome</label>
-                <input
+                <InputText
                     id="name"
                     {...register("name")}
-                    style={{
-                        padding: "0.6rem",
-                        borderRadius: "6px",
-                        border: "1px solid #ddd",
-                        fontSize: "1rem"
-                    }}
                     placeholder="Ex: Supermercado"
                     autoComplete="off"
                 />
             </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: "0.3rem" }}>
+            <div className="p-field" style={{ display: "flex", flexDirection: "column", gap: "0.3rem" }}>
                 <label htmlFor="amount" style={{ fontWeight: 500 }}>Valor</label>
-                <input
+                <InputNumber
                     id="amount"
-                    type="number"
-                    step="0.01"
-                    {...register("amount", { required: true, valueAsNumber: true })}
-                    style={{
-                        padding: "0.6rem",
-                        borderRadius: "6px",
-                        border: "1px solid #ddd",
-                        fontSize: "1rem"
-                    }}
-                    placeholder="Ex: 150.00"
+                    placeholder="Ex: R$ 150,00"
+                    mode="currency"
+                    currency="BRL"
+                    locale="pt-BR"
+                    minFractionDigits={2}
+                    maxFractionDigits={2}
+                    inputStyle={{ width: "100%" }}
+                    onValueChange={(e) => setValue("amount", e.value ?? 0)}
                 />
             </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: "0.3rem" }}>
+            <div className="p-field" style={{ display: "flex", flexDirection: "column", gap: "0.3rem" }}>
                 <label htmlFor="type" style={{ fontWeight: 500 }}>Tipo</label>
-                <select
-                    id="type"
-                    {...register("type")}
-                    style={{
-                        padding: "0.6rem",
-                        borderRadius: "6px",
-                        border: "1px solid #ddd",
-                        fontSize: "1rem"
-                    }}
-                >
-                    <option value="expense">Despesa</option>
-                    <option value="income">Receita</option>
-                </select>
+                <Controller
+                    name="type"
+                    control={control}
+                    render={({ field }) => (
+                        <Dropdown
+                            id="type"
+                            options={typeOptions}
+                            value={field.value}
+                            onChange={(e) => field.onChange(e.value)}
+                            placeholder="Selecione o tipo"
+                            style={{ width: "100%" }}
+                        />
+                    )}
+                />
             </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: "0.3rem" }}>
+            <div className="p-field" style={{ display: "flex", flexDirection: "column", gap: "0.3rem" }}>
                 <label htmlFor="category" style={{ fontWeight: 500 }}>Categoria</label>
-                <input
+                <InputText
                     id="category"
                     {...register("category")}
-                    style={{
-                        padding: "0.6rem",
-                        borderRadius: "6px",
-                        border: "1px solid #ddd",
-                        fontSize: "1rem"
-                    }}
                     placeholder="Ex: Alimentação"
                     autoComplete="off"
                 />
             </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: "0.3rem" }}>
+            <div className="p-field" style={{ display: "flex", flexDirection: "column", gap: "0.3rem" }}>
                 <label htmlFor="date" style={{ fontWeight: 500 }}>Data</label>
-                <input
-                    id="date"
-                    type="date"
-                    {...register("date")}
-                    style={{
-                        padding: "0.6rem",
-                        borderRadius: "6px",
-                        border: "1px solid #ddd",
-                        fontSize: "1rem"
-                    }}
+                <Controller
+                    name="date"
+                    control={control}
+                    render={({ field }) => (
+                        <Calendar
+                            id="date"
+                            value={field.value}
+                            onChange={(e) => field.onChange(e.value as Date)}
+                            dateFormat="dd/mm/yy"
+                            showIcon
+                            style={{ width: "100%" }}
+                        />
+                    )}
                 />
             </div>
-            <button
+            <Button
                 type="submit"
+                label="Adicionar Transação"
                 style={{
                     padding: "0.8rem",
                     borderRadius: "6px",
-                    border: "none",
-                    background: "#1976d2",
-                    color: "#fff",
                     fontWeight: 600,
                     fontSize: "1rem",
-                    cursor: "pointer",
-                    marginTop: "0.5rem",
-                    transition: "background 0.2s"
+                    marginTop: "0.5rem"
                 }}
-            >
-                Adicionar Transação
-            </button>
+            />
         </form>
     );
 }
