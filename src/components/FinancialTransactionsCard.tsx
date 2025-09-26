@@ -12,8 +12,8 @@ export default function FinancialTransactionsCard() {
     const [showDialog, setShowDialog] = useState(false);
     const financialTnxs = useSelector(financialTnxSelector)
     return (
-        <Card title="Transações Financeiras">
-            <div className="max-h-[350px] overflow-auto">
+        <Card className='w-120' title="Transações Financeiras">
+            <div className="max-h-[250px] overflow-auto">
                 <TransactionsList financialTnxs={financialTnxs} />
             </div>
             <Button label="Adicionar Transação" icon="pi pi-plus" onClick={() => setShowDialog(true)} className="mt-4" />

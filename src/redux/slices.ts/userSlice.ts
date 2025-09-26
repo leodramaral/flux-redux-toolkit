@@ -31,15 +31,19 @@ const userSlice = createSlice({
             state.income = parseFloat(income);
             state.dailyBudget = Math.floor((income / 30));
         },
-        updateDailyBudget: (state, action) => {
+        updateDailyBudgetPerTnx: (state, action) => {
             let amount = action.payload.amount;
             if (action.payload.type === 'expense') {
                 amount = -amount;
             }
             state.dailyBudget += amount;
+        },
+        updateDailyBudgetPerBankBalance: (state, action) => {
+            const totalBalance = action.payload;
+            state.dailyBudget += totalBalance;
         }
     }
 });
 
-export const { setUser, setDailyBudget, updateDailyBudget } = userSlice.actions;
+export const { setUser, setDailyBudget, updateDailyBudgetPerTnx, updateDailyBudgetPerBankBalance } = userSlice.actions;
 export default userSlice.reducer;

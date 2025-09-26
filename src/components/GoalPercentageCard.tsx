@@ -7,7 +7,7 @@ export default function GoalPercentageCard() {
     const financialGoalPercentage = useSelector(financialGoalCalcSelector);
     const financialGoal = useSelector((state: RootState) => state.user.financialGoal);
     return (
-        <Card title="Meta Financeira" className="w-80">
+        <Card title="Meta Financeira" className="w-120">
             <p className="text-lg mb-2">{financialGoal.toUpperCase()}</p>
             <p className="text-3xl font-semibold text-blue-600 mt-4">{financialGoalPercentage}%</p>
         </Card>

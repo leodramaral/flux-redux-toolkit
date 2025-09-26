@@ -3,6 +3,7 @@ import type { RootState } from "../redux/store";
 import DailyBudgetCard from "../components/DailyBudgetCard";
 import GoalPercentageCard from "../components/GoalPercentageCard";
 import FinancialTransactionsCard from "../components/FinancialTransactionsCard";
+import BankAccountCard from "../components/BankAccountCard";
 
 function Home() {
     const nameUser = useSelector((state: RootState) => state.user.name);
@@ -10,12 +11,13 @@ function Home() {
     return (
         <div className="flex flex-col items-center justify-center">
             <h1 className="text-4xl font-bold">Olá, {nameUser}</h1>
-            <div className="flex space-x-4 my-8">
+            <div className="flex space-x-4 my-2">
                 <DailyBudgetCard />
                 <GoalPercentageCard />
             </div>
-            <div className="flex space-x-4 my-8">
+            <div className="flex space-x-4 my-2">
                 <FinancialTransactionsCard />
+                <BankAccountCard />
             </div>
         </div>
     );

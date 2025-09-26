@@ -1,7 +1,7 @@
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { addTnx, type FinancialType } from "../redux/slices.ts/financialTransactionSlice";
-import { updateDailyBudget } from "../redux/slices.ts/userSlice";
+import { updateDailyBudgetPerTnx } from "../redux/slices.ts/userSlice";
 import { InputText } from "primereact/inputtext";
 import { InputNumber } from "primereact/inputnumber";
 import { Dropdown } from "primereact/dropdown";
@@ -35,7 +35,7 @@ export default function FinancialTransactionForm({ onClose }: FinancialTransacti
     
     const handleSubmitFinancialTransactionForm: SubmitHandler<FinancialTransactionForm> = (data) => {
         dispatch(addTnx(data));
-        dispatch(updateDailyBudget({ amount: data.amount, type: data.type }));
+        dispatch(updateDailyBudgetPerTnx({ amount: data.amount, type: data.type }));
         if (onClose) onClose();
     }
 
