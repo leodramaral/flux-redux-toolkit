@@ -1,6 +1,7 @@
 import { useDispatch } from "react-redux";
 import { addTnx, type FinancialType } from "../redux/slices.ts/financialTransactionSlice";
 import { useForm, type SubmitHandler } from "react-hook-form";
+import { updateDailyBudget } from "../redux/slices.ts/userSlice";
 
 type FinancialTransactionForm = {
     name: string;
@@ -17,14 +18,16 @@ export default function FinancialTransactionForm() {
             amount: 0,
             type: 'expense',
             category: '',
-            date: new Date().toLocaleDateString()
+            date: new Date().toISOString().slice(0, 10)
         }
     });
 
     const dispatch = useDispatch();
     
     const handleSubmitFinancialTransactionForm: SubmitHandler<FinancialTransactionForm> = (data) => {
+        console.log(data)
         dispatch(addTnx(data));
+        dispatch(updateDailyBudget({ amount: data.amount, type: data.type }));
     }
 
     return (
