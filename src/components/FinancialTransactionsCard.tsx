@@ -4,17 +4,13 @@ import FinancialTransactionForm from './FinancialTransactionForm';
 import { Button } from 'primereact/button';
 import { Dialog } from 'primereact/dialog';
 import { useSelector } from 'react-redux';
-import type { RootState } from '../redux/store';
 import type { IFinancialTransactionState } from '../redux/slices.ts/financialTransactionSlice';
 import { Divider } from 'primereact/divider';
+import { financialTnxSelector } from '../redux/selectors/financialTnx';
 
 export default function FinancialTransactionsCard() {
     const [showDialog, setShowDialog] = useState(false);
-    const financialTnxs = useSelector((state: RootState) =>
-        [...state.financialTransaction.transactions].sort(
-            (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-        )
-    );
+    const financialTnxs = useSelector(financialTnxSelector)
     return (
         <Card title="Transações Financeiras">
             <div className="max-h-[350px] overflow-auto">
