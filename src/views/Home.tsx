@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 import type { RootState } from "../redux/store";
 import DailyBudgetCard from "../components/DailyBudgetCard";
 import GoalPercentageCard from "../components/GoalPercentageCard";
-import FinancialTransactionForm from "../components/FinancialTransactionModal";
+import FinancialTransactionsCard from "../components/FinancialTransactionsCard";
 
 function Home() {
     const nameUser = useSelector((state: RootState) => state.user.name);
@@ -15,7 +15,7 @@ function Home() {
                 <GoalPercentageCard />
             </div>
             <div className="flex space-x-4 my-8">
-                <FinancialTransactionForm />
+                <FinancialTransactionsCard />
             </div>
         </div>
     );

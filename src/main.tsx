@@ -7,7 +7,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { PrimeReactProvider } from 'primereact/api';
 import Login from './views/Login.tsx'
 import Home from './views/Home.tsx'
-import "primereact/resources/themes/lara-light-cyan/theme.css";
+import "primereact/resources/themes/lara-dark-cyan/theme.css";
 
 const router = createBrowserRouter([
   {

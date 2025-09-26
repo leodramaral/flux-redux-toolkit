@@ -16,7 +16,11 @@ type FinancialTransactionForm = {
     date: Date;
 }
 
-export default function FinancialTransactionForm() {
+type FinancialTransactionFormProps = {
+  onClose?: () => void;
+};
+
+export default function FinancialTransactionForm({ onClose }: FinancialTransactionFormProps) {
     const { register, handleSubmit, setValue, control } = useForm<FinancialTransactionForm>({
         defaultValues: {
             name: '',
@@ -30,9 +34,9 @@ export default function FinancialTransactionForm() {
     const dispatch = useDispatch();
     
     const handleSubmitFinancialTransactionForm: SubmitHandler<FinancialTransactionForm> = (data) => {
-        console.log(data)
         dispatch(addTnx(data));
         dispatch(updateDailyBudget({ amount: data.amount, type: data.type }));
+        if (onClose) onClose();
     }
 
     const typeOptions = [
@@ -43,27 +47,20 @@ export default function FinancialTransactionForm() {
     return (
         <form
             onSubmit={handleSubmit(handleSubmitFinancialTransactionForm)}
-            style={{
-                padding: "2rem",
-                borderRadius: "12px",
-                boxShadow: "0 2px 12px rgba(0,0,0,0.08)",
-                background: "#fff",
-                display: "flex",
-                flexDirection: "column",
-                gap: "1.2rem"
-            }}
+            className="p-2 flex flex-col gap-5"
         >
-            <div className="p-field" style={{ display: "flex", flexDirection: "column", gap: "0.3rem" }}>
-                <label htmlFor="name" style={{ fontWeight: 500 }}>Nome</label>
+            <div className="flex flex-col gap-1">
+                <label htmlFor="name" className="font-medium">Nome</label>
                 <InputText
                     id="name"
                     {...register("name")}
                     placeholder="Ex: Supermercado"
                     autoComplete="off"
+                    className="w-full"
                 />
             </div>
-            <div className="p-field" style={{ display: "flex", flexDirection: "column", gap: "0.3rem" }}>
-                <label htmlFor="amount" style={{ fontWeight: 500 }}>Valor</label>
+            <div className="flex flex-col gap-1">
+                <label htmlFor="amount" className="font-medium">Valor</label>
                 <InputNumber
                     id="amount"
                     placeholder="Ex: R$ 150,00"
@@ -72,12 +69,12 @@ export default function FinancialTransactionForm() {
                     locale="pt-BR"
                     minFractionDigits={2}
                     maxFractionDigits={2}
-                    inputStyle={{ width: "100%" }}
+                    inputClassName="w-full"
                     onValueChange={(e) => setValue("amount", e.value ?? 0)}
                 />
             </div>
-            <div className="p-field" style={{ display: "flex", flexDirection: "column", gap: "0.3rem" }}>
-                <label htmlFor="type" style={{ fontWeight: 500 }}>Tipo</label>
+            <div className="flex flex-col gap-1">
+                <label htmlFor="type" className="font-medium">Tipo</label>
                 <Controller
                     name="type"
                     control={control}
@@ -88,22 +85,23 @@ export default function FinancialTransactionForm() {
                             value={field.value}
                             onChange={(e) => field.onChange(e.value)}
                             placeholder="Selecione o tipo"
-                            style={{ width: "100%" }}
+                            className="w-full"
                         />
                     )}
                 />
             </div>
-            <div className="p-field" style={{ display: "flex", flexDirection: "column", gap: "0.3rem" }}>
-                <label htmlFor="category" style={{ fontWeight: 500 }}>Categoria</label>
+            <div className="flex flex-col gap-1">
+                <label htmlFor="category" className="font-medium">Categoria</label>
                 <InputText
                     id="category"
                     {...register("category")}
                     placeholder="Ex: Alimentação"
                     autoComplete="off"
+                    className="w-full"
                 />
             </div>
-            <div className="p-field" style={{ display: "flex", flexDirection: "column", gap: "0.3rem" }}>
-                <label htmlFor="date" style={{ fontWeight: 500 }}>Data</label>
+            <div className="flex flex-col gap-1">
+                <label htmlFor="date" className="font-medium">Data</label>
                 <Controller
                     name="date"
                     control={control}
@@ -114,7 +112,6 @@ export default function FinancialTransactionForm() {
                             onChange={(e) => field.onChange(e.value as Date)}
                             dateFormat="dd/mm/yy"
                             showIcon
-                            style={{ width: "100%" }}
                         />
                     )}
                 />
@@ -122,13 +119,6 @@ export default function FinancialTransactionForm() {
             <Button
                 type="submit"
                 label="Adicionar Transação"
-                style={{
-                    padding: "0.8rem",
-                    borderRadius: "6px",
-                    fontWeight: 600,
-                    fontSize: "1rem",
-                    marginTop: "0.5rem"
-                }}
             />
         </form>
     );

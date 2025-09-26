@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 export type FinancialType = 'income' | 'expense';
 
-interface IFinancialTransactionState {
+export interface IFinancialTransactionState {
     id: string;
     name: string;
     amount: number;
